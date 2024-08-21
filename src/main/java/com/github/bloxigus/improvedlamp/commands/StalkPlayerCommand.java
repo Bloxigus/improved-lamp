@@ -10,6 +10,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class StalkPlayerCommand extends CommandBase {
@@ -29,6 +30,24 @@ public class StalkPlayerCommand extends CommandBase {
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
         if (args.length == 1) {
+            if (Objects.equals(args[0], "list")) {
+                if (ImprovedLamp.config.STALKED_PLAYERS.isEmpty()) {
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "[Stalker] You arent currently stalking anyone"));
+                    return;
+                }
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < ImprovedLamp.config.STALKED_PLAYERS.size(); i++) {
+                    String player = ImprovedLamp.config.STALKED_PLAYERS.get(i);
+                    if (i == ImprovedLamp.config.STALKED_PLAYERS.size() - 1) {
+                        sb.append(EnumChatFormatting.AQUA).append(player).append(EnumChatFormatting.GREEN);
+                    } else {
+                        sb.append(EnumChatFormatting.AQUA).append(player).append(EnumChatFormatting.GREEN).append(", ");
+                    }
+                }
+
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "[Stalker] Currently stalking: " + sb));
+                return;
+            }
             Pattern pattern = Pattern.compile("[0-9a-zA-Z_]{3,16}");
             if (pattern.asPredicate().test(args[0])) {
                 if (!ImprovedLamp.config.STALKED_PLAYERS.contains(args[0])) {

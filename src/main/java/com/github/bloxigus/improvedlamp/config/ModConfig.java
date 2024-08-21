@@ -9,6 +9,7 @@ import java.util.List;
 
 public class ModConfig {
     public String API_KEY = "<INVALID_API_KEY>";
+    public int API_REQUEST_TIMEOUT = 2000;
     public List<String> STALKED_PLAYERS = new ArrayList<>();
     public void saveConfig() {
         File configFolder = new File(Minecraft.getMinecraft().mcDataDir, "config/improvedlamp");

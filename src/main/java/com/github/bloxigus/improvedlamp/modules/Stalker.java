@@ -46,7 +46,7 @@ public class Stalker {
                                         shouldKillThread = true;
                                     }
                                 });
-                                Thread.sleep(5000);
+                                Thread.sleep(ImprovedLamp.config.API_REQUEST_TIMEOUT);
                             }
                         } catch (InterruptedException ignored) {
                             throw new RuntimeException(ignored);
@@ -84,6 +84,9 @@ public class Stalker {
             }
             if (oldStatus.online) {
                 return EnumChatFormatting.YELLOW + "[Stalker] " + EnumChatFormatting.AQUA + playerEntry.name + EnumChatFormatting.YELLOW + " disconnected from the game";
+            }
+            if (Objects.equals(newStatus.gameType, "SKYBLOCK")) {
+                return EnumChatFormatting.YELLOW + "[Stalker] " + EnumChatFormatting.AQUA + playerEntry.name + EnumChatFormatting.YELLOW + " joined the game and is playing " + EnumChatFormatting.AQUA + " Skyblock " + EnumChatFormatting.YELLOW + " in " + EnumChatFormatting.AQUA + newStatus.gameType;
             }
             return EnumChatFormatting.YELLOW + "[Stalker] " + EnumChatFormatting.AQUA + playerEntry.name + EnumChatFormatting.YELLOW + " joined the game and is playing " + EnumChatFormatting.AQUA + newStatus.mode + " " + newStatus.gameType;
         }
