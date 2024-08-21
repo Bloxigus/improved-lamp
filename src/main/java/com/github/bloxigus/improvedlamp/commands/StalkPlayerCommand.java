@@ -1,6 +1,7 @@
 package com.github.bloxigus.improvedlamp.commands;
 
 import com.github.bloxigus.improvedlamp.ImprovedLamp;
+import com.github.bloxigus.improvedlamp.utils.ListUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -32,7 +33,7 @@ public class StalkPlayerCommand extends CommandBase {
         if (args.length == 1) {
             if (Objects.equals(args[0], "list")) {
                 if (ImprovedLamp.config.STALKED_PLAYERS.isEmpty()) {
-                    Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "[Stalker] You arent currently stalking anyone"));
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "[Stalker] You are not currently stalking anyone"));
                     return;
                 }
                 StringBuilder sb = new StringBuilder();
@@ -50,11 +51,12 @@ public class StalkPlayerCommand extends CommandBase {
             }
             Pattern pattern = Pattern.compile("[0-9a-zA-Z_]{3,16}");
             if (pattern.asPredicate().test(args[0])) {
-                if (!ImprovedLamp.config.STALKED_PLAYERS.contains(args[0])) {
+                int indexOf = ListUtils.listIndexOfCaseInsensitive(ImprovedLamp.config.STALKED_PLAYERS, args[0]);
+                if (indexOf == -1) {
                     ImprovedLamp.config.STALKED_PLAYERS.add(args[0]);
                     Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "[Stalker] Successfully added " + EnumChatFormatting.AQUA + args[0] + EnumChatFormatting.GREEN + " to the stalk list"));
                 } else {
-                    ImprovedLamp.config.STALKED_PLAYERS.remove(args[0]);
+                    ImprovedLamp.config.STALKED_PLAYERS.remove(indexOf);
                     Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "[Stalker] Successfully removed " + EnumChatFormatting.AQUA + args[0] + EnumChatFormatting.GREEN + " from the stalk list"));
                 }
                 ImprovedLamp.config.saveConfig();
